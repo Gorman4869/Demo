@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .dragBox{
+            background-color: red;
+            width: 100px;
+            height: 30px;
+            cursor: move;
+        }
+        .moveShowBox{
+            height: 35px;
+            line-height: 35px;
+            display: inline-block;
+            padding: 0 10px;
+            border-radius: 5px;
+            background-color: #32363a;
+            color: #fff;
+            position: absolute;
+            left: -350px;
+        }
+        .moveShowBox::before{
+            content: "";
+            display: block;
+            position: absolute;
+            top: -6px;
+            height: 12px;
+            width: 12px;
+            transform: rotate(45deg);
+            background-color: #32363a;
+            left: calc(50% - 6px);
+        }
+        .dropCon{
+            margin-top: 10px;
+            width: 500px;
+            height: 400px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="dragBox" ondragstart="myFunction(event)" draggable="true">拖拽的元素</div>
+    <div class="dropCon" ondrop="handleDrop(event)" ondragover="handleDragOver(event)"></div>
+    
+    <span id='dragBox11' class="moveShowBox">移动一个变量</span>
+    <script>
+        // 拖动
+        function myFunction(event) {
+            const movedHoverDom = document.getElementById("dragBox11");
+            event.dataTransfer.setDragImage(movedHoverDom, 50, -20);
+            // 存储数据
+            event.dataTransfer.setData('application/my-app', '拖拽的数据');
+        }
+        // 放置
+        function handleDrop(event){
+            // 获取拖拽的数据
+            let data = event.dataTransfer.getData('application/my-app');
+            const dropTarget = document.querySelector('.dropCon');
+            const textNode = document.createTextNode(data);
+            dropTarget.appendChild(textNode);
+        }
+        function handleDragOver(event){
+            event.preventDefault()
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        section{
+            width: 1000px;
+            height: 360px;
+            margin: 100px auto;
+            display: flex;
+            justify-content: space-around;
+        }
+        h1{
+            text-align: center;
+        }
+        .choice{
+            width: 200px;
+            height: 90%;
+            background-color: rgb(128, 195, 253);
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin: 10px;
+            padding: 20px;
+        }
+        p{
+            background: red;
+            padding: 5px;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            font-size: bold;
+            cursor: move;
+            width: 160px;
+            height: 21px;
+        }
+        .drag{
+            cursor: move;
+            opacity: 1;
+        }
+        .moveShowBox{
+            background: red;
+            padding: 5px;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            font-size: bold;
+            cursor: move;
+            width: 160px;
+            height: 21px;
+        }
+    </style>
+</head>
+<body>
+    <h1>按照你选择的排序</h1>
+    <span id='dragBox11' class="moveShowBox">移动一个变量</span>
+    <section>
+        <div class="choice">
+            <p class="drag" draggable="true">Apple</p>
+            <p draggable="true">Banana</p>
+            <p draggable="true">Peach</p>
+            <p draggable="true">Orange</p>
+            <p draggable="true">Pear</p>
+        </div>
+        <div class="choice"></div>
+        <div class="choice"></div>
+    </section>
+    <script>
+        const p = document.querySelectorAll('p');
+        const choice = document.querySelectorAll('.choice');
+        let dragItem = null;
+        for(const pElemnt of p){
+            pElemnt.addEventListener('dragstart',dragStart);
+            pElemnt.addEventListener('dragend',dragEnd);
+        }
+
+        function dragStart(e){
+            dragItem = this;
+            var clonedElement = this.cloneNode(true);
+            setTimeout(() =>this.style.display = 'none');
+            const movedHoverDom = document.getElementById("dragBox11");
+            e.dataTransfer.setDragImage(movedHoverDom,10, 10);
+        }
+
+        function dragEnd(){
+            setTimeout(() =>this.style.display = 'block');
+            dragItem = null;
+        }
+
+        for(const choiceEelement of choice){
+            choiceEelement.addEventListener('dragover',dragOver)
+            choiceEelement.addEventListener('drop',Drop)
+            choiceEelement.addEventListener('dragleave',dragLeave)
+            choiceEelement.addEventListener('dragenter',dragEnter)
+            choiceEelement.addEventListener('mouseleave',dragLeave)
+        }
+        function dragOver(e){
+            e.preventDefault();
+            this.style.border = 'dotted 2px cyan';
+        }
+
+        function Drop(){
+            this.append(dragItem);
+        }
+
+        function dragLeave(){
+            this.style.border = 'none';
+        }
+
+        function dragEnter(e){
+            e.preventDefault();
+        }
+
+    </script>
+</body>
+</html>
